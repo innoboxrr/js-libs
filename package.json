@@ -1,0 +1,41 @@
+{
+  "name": "innoboxrr-js-libs",
+  "version": "1.0.0",
+  "description": "LiConjunto de herramintas de JS\u001b[Dlibrerías\u001b[F",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/innoboxrr/js-libs.git"
+  },
+  "keywords": [
+    "js",
+    "libs",
+    "array",
+    "cookie",
+    "country",
+    "currency",
+    "dates",
+    "embed",
+    "files",
+    "geo",
+    "http",
+    "json",
+    "metas",
+    "number",
+    "object",
+    "string",
+    "time",
+    "ui",
+    "user_agent",
+    "validations"
+  ],
+  "author": "Homero Raul Vargas Cruz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/innoboxrr/js-libs/issues"
+  },
+  "homepage": "https://github.com/innoboxrr/js-libs#readme"
+}
