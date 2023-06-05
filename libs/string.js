@@ -1,5 +1,11 @@
 const sanitize = (string) => {
 
+    if (typeof string !== 'string') {
+        
+        return '';
+
+    }
+
     const map = {
         '&': '&amp;',
         '<': '&lt;',
@@ -11,9 +17,10 @@ const sanitize = (string) => {
 
     const reg = /[&<>"'/]/ig;
 
-    return string.replace(reg, (match)=>(map[match]));
-
+    return string.replace(reg, (match) => (map[match]));
+    
 }
+
 
 const removeTags = (string) => {
 
@@ -28,6 +35,18 @@ const removeTags = (string) => {
         return string.replace( /(<([^>]+)>)/ig, '');
 
     }
+
+}
+
+const decodeEntities = (encodedString) => {
+
+  const textarea = document.createElement('textarea');
+
+  textarea.style.display = 'none';
+
+  textarea.innerHTML = encodedString;
+
+  return textarea.value;
 
 }
 
@@ -140,6 +159,7 @@ const copyStringToClipboard = (str) => {
 export {
     sanitize,
     removeTags,
+    decodeEntities,
     replaceWord,
     strlimit,
     slugify,
