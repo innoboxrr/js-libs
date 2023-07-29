@@ -139,22 +139,25 @@ const stringToArray = (value) => {
 }
 
 const copyStringToClipboard = (str) => {
+  return new Promise((resolve, reject) => {
+    const textArea = document.createElement('textarea');
+    textArea.value = str;
+    textArea.style.position = 'fixed';
+    textArea.style.opacity = 0;
 
-    return new Promise((resolve, reject) => {
+    document.body.appendChild(textArea);
+    textArea.select();
 
-        navigator.clipboard.writeText(str).then(res => {
-        
-            resolve(res);
-        
-        }, error => {
-        
-            reject(error);
-        
-        });
-
-    });
-
-}
+    try {
+      document.execCommand('copy');
+      resolve();
+    } catch (err) {
+      reject(err);
+    } finally {
+      document.body.removeChild(textArea);
+    }
+  });
+};
 
 export {
     sanitize,
