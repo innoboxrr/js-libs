@@ -22,7 +22,7 @@ const format = (date) => {
 
 }
 
-export const getPolicyFrequencyText = (unit, interval) => {
+export const getFrequencyText = (unit, interval) => {
     let text = '';
     switch (unit) {
         case 'monthly':
