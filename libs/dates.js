@@ -22,68 +22,66 @@ const format = (date) => {
 
 }
 
-export const getFrequencyText = ($unit, $interval) => {
-
-    $text = '';
-    
-    switch ($unit) {
+export const getPolicyFrequencyText = (unit, interval) => {
+    let text = '';
+    switch (unit) {
         case 'monthly':
-            $text = 'mensual';
-            if ($interval == 2) {
-                $text = 'bimestral';
-            } elseif ($interval == 3) {
-                $text = 'trimestral';
-            } elseif ($interval > 3) {
-                $text = 'cada ' . $interval . ' meses';
+            text = 'mensual';
+            if (interval === 2) {
+                text = 'bimestral';
+            } else if (interval === 3) {
+                text = 'trimestral';
+            } else if (interval > 3) {
+                text = 'cada ' + interval + ' meses';
             }
             break;
         case 'annual':
-            $text = 'anual';
-            if ($interval == 2) {
-                $text = 'bianual';
-            } elseif ($interval == 3) {
-                $text = 'tri-anual';
-            } elseif ($interval > 3) {
-                $text = 'cada ' . $interval . ' años';
+            text = 'anual';
+            if (interval === 2) {
+                text = 'bianual';
+            } else if (interval === 3) {
+                text = 'tri-anual';
+            } else if (interval > 3) {
+                text = 'cada ' + interval + ' años';
             }
             break;
         case 'quarterly':
-            $text = 'trimestral';
-            if ($interval > 1) {
-                $text = 'cada ' . $interval . ' trimestres';
+            text = 'trimestral';
+            if (interval > 1) {
+                text = 'cada ' + interval + ' trimestres';
             }
             break;
         case 'biannual':
-            $text = 'bianual';
-            if ($interval > 1) {
-                $text = 'cada ' . $interval . ' años';
+            text = 'bianual';
+            if (interval > 1) {
+                text = 'cada ' + interval + ' años';
             }
             break;
         case 'biennial':
-            $text = 'bianual';
-            if ($interval > 1) {
-                $text = 'cada ' . $interval . ' años';
+            text = 'bianual';
+            if (interval > 1) {
+                text = 'cada ' + interval + ' años';
             }
             break;
         // Agrega más casos para otras unidades si es necesario.
         case 'weekly':
-            $text = 'semanal';
-            if ($interval > 1) {
-                $text = 'cada ' . $interval . ' semanas';
+            text = 'semanal';
+            if (interval > 1) {
+                text = 'cada ' + interval + ' semanas';
             }
             break;
         case 'daily':
-            $text = 'diaria';
-            if ($interval > 1) {
-                $text = 'cada ' . $interval . ' días';
+            text = 'diaria';
+            if (interval > 1) {
+                text = 'cada ' + interval + ' días';
             }
             break;
         default:
-            $text = 'frecuencia no especificada';
+            text = 'frecuencia no especificada';
             break;
     }
 
-    return $text;
+    return text;
 }
 
 
