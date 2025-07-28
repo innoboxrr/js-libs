@@ -215,23 +215,22 @@ const detectMarkdownConfidence = (text) => {
 };
 
 
+import { marked } from 'marked';
+
 const markdownToHtml = (markdown) => {
     if (typeof markdown !== 'string') return '';
 
-    // Desescapar caracteres comunes
     const cleaned = markdown
         .replace(/\\n/g, '\n')
         .replace(/\\"/g, '"')
         .replace(/\\'/g, "'");
 
-    // Configurar marked para generar bloques <pre><code class="language-xxx">
-    marked.setOptions({
-        gfm: true,
-        breaks: true,
-        highlight: (code, lang) => {
-            const language = lang || 'plaintext';
-            const escapedCode = escapeHtml(code);
-            return `<pre class="language-${language}"><code class="language-${language}">${escapedCode}</code></pre>`;
+    marked.use({
+        renderer: {
+            code(code, infostring, escaped) {
+                const lang = (infostring || 'plaintext').trim();
+                return `<pre class="language-${lang}"><code>${escapeHtml(code)}</code></pre>`;
+            }
         }
     });
 
