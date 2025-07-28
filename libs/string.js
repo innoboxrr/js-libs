@@ -238,12 +238,15 @@ const markdownToHtml = (markdown) => {
 };
 
 // Escapar HTML dentro del bloque <code>
-const escapeHtml = (html) => {
-    return html
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+const escapeHtml = (unsafe) => {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 };
+
 
 export {
     sanitize,
