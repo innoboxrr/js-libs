@@ -214,9 +214,6 @@ const detectMarkdownConfidence = (text) => {
     return parseFloat(confidence.toFixed(2)); // Valor entre 0 y 1, con 2 decimales
 };
 
-
-import { marked } from 'marked';
-
 const markdownToHtml = (markdown) => {
     if (typeof markdown !== 'string') return '';
 
