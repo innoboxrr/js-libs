@@ -236,6 +236,8 @@ const markdownToHtml = (markdown) => {
 
 // Escapar HTML dentro del bloque <code>
 const escapeHtml = (unsafe) => {
+    if (typeof unsafe !== 'string') return '';
+    
     return unsafe
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
@@ -243,6 +245,7 @@ const escapeHtml = (unsafe) => {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 };
+
 
 
 export {
