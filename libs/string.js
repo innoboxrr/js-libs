@@ -1,3 +1,5 @@
+import { marked } from 'marked';
+
 const sanitize = (string) => {
 
     if (typeof string !== 'string') {
@@ -20,7 +22,6 @@ const sanitize = (string) => {
     return string.replace(reg, (match) => (map[match]));
     
 }
-
 
 const removeTags = (string) => {
 
@@ -163,6 +164,88 @@ export const firstLetterUppercase = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+export const detectMarkdown = (text) => {
+    if (typeof text !== 'string') return false;
+
+    const patterns = [
+        /^#{1,6} /m,                        // Encabezados: #, ##, etc.
+        /\*\*(.*?)\*\*/s,                  // Negritas con **
+        /_(.*?)_/s,                        // Cursivas con _
+        /\[(.*?)\]\((.*?)\)/s,            // Enlaces [text](url)
+        /!\[(.*?)\]\((.*?)\)/s,           // Imágenes ![alt](url)
+        /```[\s\S]*?```/,                 // Bloques de código triple backtick
+        /(^|\n)[\-*+] /,                  // Listas no ordenadas
+        /^\d+\.\s/m,                      // Listas ordenadas
+        /^>\s/m,                          // Citas
+        /\|(.+)\|/,                       // Tablas con |
+        /---|___|\*\*\*/                 // Separadores horizontales
+    ];
+
+    return patterns.some((regex) => regex.test(text));
+};
+
+export const detectMarkdownConfidence = (text) => {
+    if (typeof text !== 'string' || text.trim() === '') return 0;
+
+    const patterns = [
+        { name: 'header',        regex: /^#{1,6} /m },                        // # Header
+        { name: 'bold',          regex: /\*\*(.*?)\*\*/s },                  // **bold**
+        { name: 'italic',        regex: /_(.*?)_/s },                        // _italic_
+        { name: 'link',          regex: /\[(.*?)\]\((.*?)\)/s },             // [text](url)
+        { name: 'image',         regex: /!\[(.*?)\]\((.*?)\)/s },            // ![alt](img)
+        { name: 'codeBlock',     regex: /```[\s\S]*?```/ },                  // ``` code ```
+        { name: 'inlineCode',    regex: /`[^`\n]+`/ },                       // `code`
+        { name: 'ulList',        regex: /(^|\n)[\-*+] / },                   // - item
+        { name: 'olList',        regex: /^\d+\.\s/m },                       // 1. item
+        { name: 'blockquote',    regex: /^>\s/m },                           // > quote
+        { name: 'table',         regex: /\|(.+)\|/ },                        // | table |
+        { name: 'hr',            regex: /(^|\n)(---|\*\*\*|___)(\n|$)/ },    // --- separator
+    ];
+
+    const totalPatterns = patterns.length;
+    let matchCount = 0;
+
+    patterns.forEach(({ regex }) => {
+        if (regex.test(text)) matchCount++;
+    });
+
+    const confidence = matchCount / totalPatterns;
+
+    return parseFloat(confidence.toFixed(2)); // Valor entre 0 y 1, con 2 decimales
+};
+
+
+export const markdownToHtml = (markdown) => {
+    if (typeof markdown !== 'string') return '';
+
+    // Desescapar caracteres comunes
+    const cleaned = markdown
+        .replace(/\\n/g, '\n')
+        .replace(/\\"/g, '"')
+        .replace(/\\'/g, "'");
+
+    // Configurar marked para generar bloques <pre><code class="language-xxx">
+    marked.setOptions({
+        gfm: true,
+        breaks: true,
+        highlight: (code, lang) => {
+            const language = lang || 'plaintext';
+            const escapedCode = escapeHtml(code);
+            return `<pre class="language-${language}"><code class="language-${language}">${escapedCode}</code></pre>`;
+        }
+    });
+
+    return marked.parse(cleaned);
+};
+
+// Escapar HTML dentro del bloque <code>
+export const escapeHtml = (html) => {
+    return html
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+};
+
 export {
     sanitize,
     removeTags,
@@ -174,4 +257,6 @@ export {
     randomString,
     stringToArray,
     copyStringToClipboard,
+    markdownToHtml,
+    escapeHtml
 }

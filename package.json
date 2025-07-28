@@ -1,6 +1,6 @@
 {
   "name": "innoboxrr-js-libs",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "LiConjunto de herramintas de JS\u001b[Dlibrerías\u001b[F",
   "main": "index.js",
   "scripts": {
@@ -37,5 +37,8 @@
   "bugs": {
     "url": "https://github.com/innoboxrr/js-libs/issues"
   },
-  "homepage": "https://github.com/innoboxrr/js-libs#readme"
+  "homepage": "https://github.com/innoboxrr/js-libs#readme",
+  "dependencies": {
+    "marked": "^16.1.1"
+  }
 }
