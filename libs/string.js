@@ -160,11 +160,11 @@ const copyStringToClipboard = (str) => {
   });
 };
 
-export const firstLetterUppercase = (string) => {
+const firstLetterUppercase = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-export const detectMarkdown = (text) => {
+const detectMarkdown = (text) => {
     if (typeof text !== 'string') return false;
 
     const patterns = [
@@ -184,7 +184,7 @@ export const detectMarkdown = (text) => {
     return patterns.some((regex) => regex.test(text));
 };
 
-export const detectMarkdownConfidence = (text) => {
+const detectMarkdownConfidence = (text) => {
     if (typeof text !== 'string' || text.trim() === '') return 0;
 
     const patterns = [
@@ -215,7 +215,7 @@ export const detectMarkdownConfidence = (text) => {
 };
 
 
-export const markdownToHtml = (markdown) => {
+const markdownToHtml = (markdown) => {
     if (typeof markdown !== 'string') return '';
 
     // Desescapar caracteres comunes
@@ -239,7 +239,7 @@ export const markdownToHtml = (markdown) => {
 };
 
 // Escapar HTML dentro del bloque <code>
-export const escapeHtml = (html) => {
+const escapeHtml = (html) => {
     return html
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -258,5 +258,8 @@ export {
     stringToArray,
     copyStringToClipboard,
     markdownToHtml,
+    firstLetterUppercase,
+    detectMarkdown,
+    detectMarkdownConfidence,
     escapeHtml
 }
