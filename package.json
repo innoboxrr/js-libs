@@ -1,6 +1,6 @@
 {
   "name": "innoboxrr-js-libs",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Conjunto de utilidades JS del ecosistema innoboxrr.",
   "main": "index.js",
   "scripts": {
@@ -43,7 +43,7 @@
   },
   "homepage": "https://github.com/innoboxrr/js-libs#readme",
   "dependencies": {
-    "innoboxrr-form-core": "^1.0.0",
+    "innoboxrr-form-core": "^2.0.0",
     "marked": "^16.1.1",
     "platform": "^1.3.6"
   },
