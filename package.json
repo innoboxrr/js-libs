@@ -1,6 +1,6 @@
 {
   "name": "innoboxrr-js-libs",
-  "version": "1.0.18",
+  "version": "2.0.0",
   "description": "Conjunto de utilidades JS del ecosistema innoboxrr.",
   "main": "index.js",
   "scripts": {
