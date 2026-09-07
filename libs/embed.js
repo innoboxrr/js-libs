@@ -1,4 +1,7 @@
-import { urlParser } from '@js/utils/http'
+// Estaba importado como '@js/utils/http', un alias de Vite que solo existe en
+// la aplicacion anfitriona: fuera de ella el paquete no resolvia. urlParser se
+// exporta desde el modulo hermano.
+import { urlParser } from './http.js'
 
 const getEmbedUrl = (url) => {
 

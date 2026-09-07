@@ -39,6 +39,18 @@
   },
   "homepage": "https://github.com/innoboxrr/js-libs#readme",
   "dependencies": {
-    "marked": "^16.1.1"
-  }
+    "dayjs": "^1.11.0",
+    "marked": "^16.1.1",
+    "platform": "^1.3.6"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./libs/*": "./libs/*"
+  },
+  "files": [
+    "index.js",
+    "libs"
+  ],
+  "sideEffects": false
 }

@@ -1,4 +1,6 @@
-var platform = require('platform');
+// Era require() dentro de un paquete ESM, que Node rechaza, y la
+// dependencia tampoco estaba declarada.
+import platform from 'platform'
 
 const parsePlatform = (ua) => {
 
