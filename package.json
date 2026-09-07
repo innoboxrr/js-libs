@@ -1,10 +1,11 @@
 {
   "name": "innoboxrr-js-libs",
   "version": "1.0.18",
-  "description": "LiConjunto de herramintas de JS\u001b[Dlibrerías\u001b[F",
+  "description": "Conjunto de utilidades JS del ecosistema innoboxrr.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
@@ -39,7 +40,7 @@
   },
   "homepage": "https://github.com/innoboxrr/js-libs#readme",
   "dependencies": {
-    "dayjs": "^1.11.0",
+    "innoboxrr-form-core": "^1.0.0",
     "marked": "^16.1.1",
     "platform": "^1.3.6"
   },
@@ -52,5 +53,9 @@
     "index.js",
     "libs"
   ],
-  "sideEffects": false
+  "sideEffects": false,
+  "devDependencies": {
+    "jsdom": "^25.0.0",
+    "vitest": "^3.0.0"
+  }
 }

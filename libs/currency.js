@@ -1,62 +1,75 @@
-const currencyRates = () => {
+/**
+ * El endpoint de tipos de cambio.
+ *
+ * Estaba escrito dentro de la función. Sacarlo permite apuntarlo a otro sitio
+ * —o a un mock en una prueba— sin tocar el código.
+ */
+export const RATES_ENDPOINT = 'https://exchange.api.itec.systems/api/rates'
 
-    return new Promise(function(resolve, reject) {
+/**
+ * Tipos de cambio con MXN como base.
+ *
+ * Devolvía una promesa que **nunca se rechazaba**: no había `catch` y el
+ * parámetro `reject` no se usaba, así que un fallo de red dejaba la promesa
+ * pendiente para siempre y quien la esperara se quedaba colgado.
+ *
+ * @param {{endpoint?: string, signal?: AbortSignal}} [options]
+ * @returns {Promise<Record<string, number>>}
+ */
+const currencyRates = async (options = {}) => {
+    const response = await fetch(options.endpoint ?? RATES_ENDPOINT, { signal: options.signal })
 
-        fetch('https://exchange.api.itec.systems/api/rates').then(response => response.json()).then(data => {
-            
-            let currency = {
-                'MXN': 1,
-                'EUR': data['EUR'],
-                'USD': data['USD'],
-            }  
+    if (! response.ok) {
+        throw new Error(`No se pudieron obtener los tipos de cambio (HTTP ${response.status}).`)
+    }
 
-            resolve(currency);   
-
-        });
-
-    });        
-
-}
-
-const currencySymbols = () => {
+    const data = await response.json()
 
     return {
-        "CAD": "$",
-        "HKD": "$",
-        "ISK": "kr",
-        "PHP": "₱",
-        "DKK": "kr",
-        "HUF": "Ft",
-        "CZK": "Kč",
-        "GBP": "£",
-        "RON": "kr",
-        "SEK": "kr",
-        "IDR": "Rp",
-        "INR": "₹",
-        "BRL": "R$",
-        "RUB": "₽",
-        "HRK": "kn",
-        "JPY": "¥",
-        "THB": "฿",
-        "CHF": "CHF",
-        "EUR": "€",
-        "MYR": "RM",
-        "BGN": "лв",
-        "TRY": "TL",
-        "CNY": "¥",
-        "NOK": "kr",
-        "NZD": "$",
-        "ZAR": "R",
-        "USD": "$",
-        "MXN": "$",
-        "SGD": "$",
-        "AUD": "$",
-        "ILS": "₪",
-        "KRW": "₩",
-        "PLN": "zł"
+        MXN: 1,
+        EUR: data.EUR,
+        USD: data.USD,
     }
-    
 }
+
+/**
+ * @returns {Record<string, string>}
+ */
+const currencySymbols = () => ({
+    AUD: '$',
+    BGN: 'лв',
+    BRL: 'R$',
+    CAD: '$',
+    CHF: 'CHF',
+    CNY: '¥',
+    CZK: 'Kč',
+    DKK: 'kr',
+    EUR: '€',
+    GBP: '£',
+    HKD: '$',
+    HRK: 'kn',
+    HUF: 'Ft',
+    IDR: 'Rp',
+    ILS: '₪',
+    INR: '₹',
+    ISK: 'kr',
+    JPY: '¥',
+    KRW: '₩',
+    MXN: '$',
+    MYR: 'RM',
+    NOK: 'kr',
+    NZD: '$',
+    PHP: '₱',
+    PLN: 'zł',
+    RON: 'lei',
+    RUB: '₽',
+    SEK: 'kr',
+    SGD: '$',
+    THB: '฿',
+    TRY: '₺',
+    USD: '$',
+    ZAR: 'R',
+})
 
 export {
     currencyRates,

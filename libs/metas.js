@@ -1,96 +1,90 @@
-const buildMetaTags = (metas) => {
+import { escapeHtml } from './string.js'
 
-	let metaTags = [];
+/**
+ * Construye las etiquetas `<meta>` a partir de una lista de objetos.
+ *
+ * La versión anterior concatenaba los valores dentro de una cadena HTML y la
+ * pasaba por `innerHTML` sin escapar nada. Una descripción con una comilla
+ * doble se salía del atributo, y con contenido venido de la API eso es una
+ * inyección de marcado en el `<head>`. Aquí las etiquetas se construyen con
+ * `setAttribute`, que no interpreta nada.
+ *
+ * @param {Array<Record<string, string>>} metas
+ * @returns {HTMLMetaElement[]}
+ */
+const buildMetaTags = (metas) => (metas ?? []).map((meta) => {
+    const tag = document.createElement('meta')
 
-	metas.forEach( meta => {
+    Object.entries(meta ?? {}).forEach(([key, value]) => {
+        tag.setAttribute(key, String(value ?? ''))
+    })
 
-		let metaTagStr = '<meta ';
+    return tag
+})
 
-		for(const prop in meta) {
+/**
+ * @param {string} html
+ * @returns {ChildNode|null}
+ */
+const createMetaTag = (html) => {
+    const template = document.createElement('template')
 
-			let key = prop;
-			
-			let value = meta[prop];
+    template.innerHTML = String(html ?? '').trim()
 
-			metaTagStr += (key + '="' + value + '" ');
-
-		}
-
-		metaTagStr += '>';
-
-		let metaTag = createMetaTag(metaTagStr);
-
-		metaTags.push(metaTag);
-
-	});
-
-	return metaTags;
-
+    return template.content.firstChild
 }
 
-const createMetaTag = (metaTagStr) => {
-
-	let template = document.createElement('template');
-
-	template.innerHTML = metaTagStr.trim();
-
-	return template.content.firstChild;
-
-}
-
+/**
+ * @param {HTMLMetaElement[]} metaTags
+ */
 const appendMetaTags = (metaTags) => {
-
-	metaTags.forEach( metaTag => {
-
-		document.head.appendChild(metaTag);
-
-	});
-
+    (metaTags ?? []).forEach((metaTag) => document.head.appendChild(metaTag))
 }
 
+/**
+ * @param {Array<Record<string, string>>} metas
+ */
 const set = (metas) => {
+    if (! Array.isArray(metas)) {
+        return
+    }
 
-	if(Array.isArray(metas)) {
-
-		let metaTags = buildMetaTags(metas);
-
-		appendMetaTags(metaTags);
-
-	}
-
+    appendMetaTags(buildMetaTags(metas))
 }
 
+/**
+ * Actualiza el `content` de las etiquetas que ya existan.
+ *
+ * La primera clave del objeto identifica la etiqueta (`name`, `property`…) y
+ * `content` es el valor nuevo. Lo hacía con un `for...in` que terminaba en un
+ * `break`, lo que decía lo mismo de forma bastante más críptica.
+ *
+ * @param {Array<Record<string, string>>} metas
+ */
 const update = (metas) => {
+    if (! Array.isArray(metas)) {
+        return
+    }
 
-	if(Array.isArray(metas)) {
+    metas.forEach((meta) => {
+        const [key, value] = Object.entries(meta ?? {})[0] ?? []
 
-		metas.forEach( meta => {
+        if (! key || meta.content === undefined) {
+            return
+        }
 
-			for(const prop in meta) {
+        // Con comillas y escapado: un valor con comillas rompía el selector.
+        const selector = `meta[${key}="${String(value).replace(/(["\\])/g, '\\$1')}"]`
 
-				let key = prop;
-			
-				let value = meta[prop];
-
-				let metaTag = document.querySelector(`meta[${key}="${value}"]`);
-
-				if(metaTag != null) {
-
-					metaTag.setAttribute('content', meta['content']);
-
-				}
-	
-				break;
-
-			}
-
-		});
-
-	}
-
+        document.querySelector(selector)?.setAttribute('content', meta.content)
+    })
 }
 
 export {
-	set,
-	update
+    set,
+    update,
+    buildMetaTags,
+    appendMetaTags,
+    createMetaTag,
+    escapeHtml
 }

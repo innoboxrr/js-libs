@@ -1,4 +1,3 @@
-import * as dayjs from 'dayjs'
 
 const SEG = 1000;
 const MIN = 60000;
@@ -14,11 +13,6 @@ const unixTime = () => {
 const subDays = (unix, days) => {
 
 	return new Date(unix - (days * DAY));
-
-}
-
-const format = (date) => {
-
 
 }
 
@@ -83,7 +77,6 @@ export const getFrequencyText = (unit, interval) => {
 
     return text;
 }
-
 
 export {
 	unixTime,
